@@ -1,14 +1,21 @@
-let size = 3, width = 100, score = 0
+let size = 3
+let score = 0
 let n = []
+let gameBlock = document.getElementById('gameBlock')
 let field = document.getElementById('field')
 let sizeBlock = document.getElementById('size')
 let controlsBlock = document.getElementById('controls')
 let gameOverBlock = document.getElementById('gameOver')
-let startBlock = document.getElementById('startBox')
+let startBlock = document.getElementById('startBlock')
 let scoreBlock = document.getElementById('scoreBlock')
 let scoreNode = document.getElementById('score')
 let menuButton = document.getElementById('menu')
+let root = document.documentElement
 let boxes
+
+// touch
+let xDown = null
+let yDown = null
 
 
 const rand = (min, max) => {
@@ -17,6 +24,10 @@ const rand = (min, max) => {
 		min = 0
 	}
 	return Math.floor(Math.random() * (max + 1 - min)) + min
+}
+
+const changeStyle = ([...nodes], property, value) => {
+	nodes.forEach(n => n.style.setProperty(property, value))
 }
 
 const pickRandomPower = power => {
@@ -35,7 +46,7 @@ const updateScore = newScore => {
 const changeSize = amount => {
 	size += amount
 	if (size < 3) size = 3
-	if (size > 6) size = 6
+	if (size > 20) size = 20
 	sizeBlock.innerText = size + 'x' + size
 }
 
@@ -62,8 +73,8 @@ const gameOverCheck = () => {
 			}
 		}
 	}
-	controlsBlock.style.display = menuButton.style.display = 'none'
-	startBlock.style.display = gameOverBlock.style.display = 'flex'
+	changeStyle([controlsBlock, menuButton], 'display', 'none')
+	changeStyle([startBlock, gameOverBlock], 'display', 'flex')
 }
 
 const addNum = num => {
@@ -195,20 +206,53 @@ const swipe = side => {
 	if (moved) {
 		updateHTMLBox()
 
-		for (let i = 0; i < rand(1, 2); i++)
+		for (let i = 0; i < rand(1, Math.ceil(size / 4)); i++)
 			addNum(pickRandomPower(2))
 	}
 
 	gameOverCheck()
 }
 
+const checkKey = e => {
+	if (window.getComputedStyle(gameBlock, null).getPropertyValue('display') == 'none') {
+		return
+	}
+
+	/* eslint-disable */
+	switch (e.keyCode) {
+		case 87: // W
+		case 38: // arrow
+			swipe('up')
+			break
+		case 83: // S
+		case 40: // arrow
+			swipe('down')
+			break
+		case 65: // A
+		case 37: // arrow
+			swipe('left')
+			break
+		case 68: // D
+		case 39: // arrow
+			swipe('right')
+			break
+
+		default:
+			break
+	}
+	/* eslint-enable */
+}
+
 const start = () => {
+
+	changeStyle([root], '--size', size)
 
 	for (let i = 0; i < size; i++) {
 		n.push(new Array())
 	}
 
-	field.style.width = field.style.height = width * size + 'px'
+	// let fieldWidth = 100 * size + 'px'
+	// changeStyle([root], '--field-width', fieldWidth)
 	field.innerHTML = ''
 
 	for (let i = 0; i < size; i++) {
@@ -219,7 +263,8 @@ const start = () => {
 			let newBox = document.createElement('div')
 			newBox.id = `box-${i}-${j}`
 
-			newBox.style.width = newBox.style.height = width + 'px'
+			// changeStyle([newBox], 'width', '100px')
+			// changeStyle([newBox], 'height', '100px')
 
 			field.appendChild(newBox)
 		}
@@ -227,36 +272,71 @@ const start = () => {
 
 	boxes = document.querySelectorAll('[id^="box"]')
 
-	for (let i = 0; i < rand(2, 4); i++)
+	for (let i = 0; i < rand(2, size - 1); i++)
 		addNum(pickRandomPower(1))
 
 	updateScore(0)
 
-	field.style.display =
-		controlsBlock.style.display =
-		scoreBlock.style.display =
-		menuButton.style.display = 'flex'
-
-	startBlock.style.display = gameOverBlock.style.display = 'none'
+	changeStyle([gameBlock, scoreBlock, menuButton], 'display', 'flex')
+	changeStyle([startBlock, gameOverBlock], 'display', 'none')
 }
 
 const goToMenu = () => {
 	if (confirm('Go to menu?')) {
-		controlsBlock.style.display =
-			menuButton.style.display =
-			field.style.display =
-			scoreBlock.style.display = 'none'
-		startBlock.style.display = 'flex'
+		changeStyle([menuButton, gameBlock, scoreBlock], 'display', 'none')
+		changeStyle([startBlock], 'display', 'flex')
 	}
 }
 
-document.getElementById('btn-left').addEventListener('click', () => swipe('left'))
-document.getElementById('btn-right').addEventListener('click', () => swipe('right'))
-document.getElementById('btn-up').addEventListener('click', () => swipe('up'))
-document.getElementById('btn-down').addEventListener('click', () => swipe('down'))
+// touch controls
+const handleTouchStart = evt => {
+	const firstTouch = evt.touches[0]
+	xDown = firstTouch.clientX
+	yDown = firstTouch.clientY
+}
+
+const handleTouchMove = evt => {
+	if (!xDown || !yDown) {
+		return
+	}
+
+	let xUp = evt.touches[0].clientX
+	let yUp = evt.touches[0].clientY
+
+	let xDiff = xDown - xUp
+	let yDiff = yDown - yUp
+
+	if (Math.abs(xDiff) > Math.abs(yDiff)) {
+		if (xDiff > 0) {
+			swipe('left')
+		} else {
+			swipe('right')
+		}
+	} else {
+		if (yDiff > 0) {
+			swipe('up')
+		} else {
+			swipe('down')
+		}
+	}
+
+	xDown = null
+	yDown = null
+}
 
 document.getElementById('sizeIncrease').addEventListener('click', () => changeSize(1))
 document.getElementById('sizeDecrease').addEventListener('click', () => changeSize(-1))
 document.getElementById('startGame').addEventListener('click', start)
 menuButton.addEventListener('click', goToMenu)
+
+// Controls
+document.getElementById('btn-left').addEventListener('click', () => swipe('left'))
+document.getElementById('btn-right').addEventListener('click', () => swipe('right'))
+document.getElementById('btn-up').addEventListener('click', () => swipe('up'))
+document.getElementById('btn-down').addEventListener('click', () => swipe('down'))
+
+document.addEventListener('keydown', checkKey)
+
+field.addEventListener('touchstart', handleTouchStart, false)
+field.addEventListener('touchmove', handleTouchMove, false)
 

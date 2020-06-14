@@ -5,7 +5,17 @@
 }
 
 :root {
-	--w300: 300px;
+	--size: 3;
+	--field-width: min(100vw, (80vh));
+	--field-color: rgb(255, 233, 206);
+	--box-width: calc(var(--field-width) / var(--size));
+	--box-color: rgb(231, 171, 121);
+	--box-border-width: calc((var(--field-width) / var(--size)) / 10);
+}
+
+html {
+	width: 100vw;
+	height: 100vh;
 }
 
 .container {
@@ -15,28 +25,76 @@
 	position: relative;
 	max-width: 800px;
 	margin: 0 auto;
-	margin-top: 20px;
+}
+
+#topRow {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: relative;
+	width: 100%;
+}
+
+#menu {
+	display: none;
+	align-items: center;
+	justify-content: space-around;
 }
 
 #scoreBlock {
+	display: none;
 	font-size: 18px;
-	margin-bottom: 20px;
+	flex: 1;
+}
+
+#gameBlock {
 	display: none;
 }
 
 #field {
-	display: none;
+	display: flex;
 	flex-wrap: wrap;
+	justify-content: space-evenly;
+	align-items: center;
+	width: var(--field-width);
+	height: var(--field-width);
 	font-size: 32px;
 	margin-bottom: 20px;
-	box-shadow: 0 0 0 1px violet;
+	background-color: var(--field-color);
+	box-shadow: 0px 0px 0px var(--box-border-width) var(--field-color);
+	border-radius: 10px;
 }
 
 [id^="box"] {
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
-	border: 1px solid violet;
+	background-color: var(--box-color);
+	width: var(--box-width);
+	height: var(--box-width);
+	transition: .2s;
+	position: relative;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+[id^="box"]::before {
+	position: absolute;
+	content: '';
+	width: 100%;
+	height: 100%;
+	box-shadow: inset 0px 0px 0px var(--box-border-width) var(--field-color);
+	border-radius: 20%;
+}
+
+[id^="box"]::after {
+	position: absolute;
+	content: '';
+	width: 100%;
+	height: 100%;
+	box-shadow: inset 0px 0px 0px var(--box-border-width) var(--field-color);
 }
 
 button {
@@ -60,15 +118,7 @@ button {
 	justify-content: space-between;
 }
 
-#menu {
-	display: none;
-	position: absolute;
-	right: 50px;
-	align-items: center;
-	justify-content: space-around;
-}
-
-#startBox {
+#startBlock {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
