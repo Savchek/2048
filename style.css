@@ -6,7 +6,7 @@
 
 :root {
 	--size: 3;
-	--field-width: min(100vw, (80vh));
+	--field-width: min(100vw, 85vh);
 	--field-color: rgb(255, 233, 206);
 	--box-width: calc(var(--field-width) / var(--size));
 	--box-color: rgb(231, 171, 121);
@@ -33,6 +33,7 @@ html {
 	justify-content: space-between;
 	position: relative;
 	width: 100%;
+	height: 10vh;
 }
 
 #menu {

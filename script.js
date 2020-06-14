@@ -12,6 +12,7 @@ let scoreNode = document.getElementById('score')
 let menuButton = document.getElementById('menu')
 let root = document.documentElement
 let boxes
+let boxWidth
 
 // touch
 let xDown = null
@@ -251,8 +252,6 @@ const start = () => {
 		n.push(new Array())
 	}
 
-	// let fieldWidth = 100 * size + 'px'
-	// changeStyle([root], '--field-width', fieldWidth)
 	field.innerHTML = ''
 
 	for (let i = 0; i < size; i++) {
@@ -262,9 +261,6 @@ const start = () => {
 
 			let newBox = document.createElement('div')
 			newBox.id = `box-${i}-${j}`
-
-			// changeStyle([newBox], 'width', '100px')
-			// changeStyle([newBox], 'height', '100px')
 
 			field.appendChild(newBox)
 		}
@@ -279,6 +275,8 @@ const start = () => {
 
 	changeStyle([gameBlock, scoreBlock, menuButton], 'display', 'flex')
 	changeStyle([startBlock, gameOverBlock], 'display', 'none')
+
+	boxWidth = document.getElementById('box-0-0').offsetWidth
 }
 
 const goToMenu = () => {
@@ -306,22 +304,42 @@ const handleTouchMove = evt => {
 	let xDiff = xDown - xUp
 	let yDiff = yDown - yUp
 
-	if (Math.abs(xDiff) > Math.abs(yDiff)) {
+	let threshold = 100
+	let dir = null
+
+	if (Math.abs(xDiff) > threshold) {
 		if (xDiff > 0) {
-			swipe('left')
+			dir = 'left'
 		} else {
-			swipe('right')
+			dir = 'right'
 		}
-	} else {
+	} else if (Math.abs(yDiff) > threshold) {
 		if (yDiff > 0) {
-			swipe('up')
+			dir = 'up'
 		} else {
-			swipe('down')
+			dir = 'down'
 		}
 	}
 
-	xDown = null
-	yDown = null
+	if (dir) {
+		swipe(dir)
+		xDown = null
+		yDown = null
+	}
+
+	// if (Math.abs(xDiff) > Math.abs(yDiff)) {
+	// 	if (xDiff > threshold) {
+	// 		swipe('left')
+	// 	} else if (xDiff < threshold) {
+	// 		swipe('right')
+	// 	}
+	// } else {
+	// 	if (yDiff > threshold) {
+	// 		swipe('up')
+	// 	} else if (yDiff < threshold) {
+	// 		swipe('down')
+	// 	}
+	// }
 }
 
 document.getElementById('sizeIncrease').addEventListener('click', () => changeSize(1))
