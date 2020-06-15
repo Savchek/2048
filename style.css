@@ -87,6 +87,7 @@ body, input, button {
 	    -ms-user-select: none;
 	        user-select: none;
 	display: none;
+	position: relative;
 }
 
 #field {
@@ -142,31 +143,54 @@ button {
 }
 
 #controls {
+	--c-size: calc(var(--field-width) * 0.3);
 	display: none;
-	width: 200px;
-	height: 100px;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	    -ms-flex-direction: column;
-	        flex-direction: column;
-	-webkit-box-pack: justify;
-	    -ms-flex-pack: justify;
-	        justify-content: space-between;
-}
-.on-mid {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
+	position: absolute;
+	width: 100%;
+	height: 100%;
 	-ms-flex-pack: distribute;
 	    justify-content: space-around;
 }
-.around {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: justify;
-	    -ms-flex-pack: justify;
-	        justify-content: space-between;
+
+#controls [id^="btn"] {
+	position: absolute;
+	border: none;
+	background: none;
+	width: 0;
+	height: 0;
+	z-index: 5;
+}
+
+#controls #btn-up {
+	top: calc(0px - var(--box-margin));
+	left: calc(50% - (var(--c-size)/2));
+	border-left: calc(var(--c-size) / 2) solid transparent;
+	border-right: calc(var(--c-size) / 2) solid transparent;
+	border-bottom: var(--c-size) solid rgba(0, 255, 42, 0.24);
+}
+
+#controls #btn-left {
+	left: 0;
+	top: calc(50% - (var(--c-size)/2) - var(--box-margin) / 2);
+	border-top: calc(var(--c-size) / 2) solid transparent;
+	border-bottom: calc(var(--c-size) / 2) solid transparent;
+	border-right: var(--c-size) solid rgba(0, 255, 42, 0.24);
+}
+
+#controls #btn-right {
+	right: 0;
+	top: calc(50% - (var(--c-size)/2) - var(--box-margin) / 2);
+	border-top: calc(var(--c-size) / 2) solid transparent;
+	border-bottom: calc(var(--c-size) / 2) solid transparent;
+	border-left: var(--c-size) solid rgba(0, 255, 42, 0.24);
+}
+
+#controls #btn-down {
+	top: calc(0px + var(--field-width) - var(--c-size) + var(--box-margin));
+	left: calc(50% - (var(--c-size)/2));
+	border-left: calc(var(--c-size) / 2) solid transparent;
+	border-right: calc(var(--c-size) / 2) solid transparent;
+	border-top: var(--c-size) solid rgba(0, 255, 42, 0.24);
 }
 
 #startBlock {

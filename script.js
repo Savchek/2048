@@ -303,6 +303,10 @@ const start = () => {
 
 	changeStyle([root], '--size', size)
 
+	if (window.innerWidth < window.innerHeight) {
+		controlsBlock.style.display = 'flex'
+	}
+
 	for (let i = 0; i < size; i++) {
 		n.push(new Array())
 	}
