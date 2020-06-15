@@ -331,7 +331,7 @@ const start = () => {
 
 	gameBlock.style.display = scoreBlock.style.display = menuButton.style.display = 'flex'
 	// changeStyle([gameBlock, scoreBlock, menuButton], 'display', 'flex')
-	// changeStyle([startBlock, gameOverBlock], 'display', 'none')
+	changeStyle([startBlock, gameOverBlock], 'display', 'none')
 
 	boxWidth = document.getElementById('box-0-0').offsetWidth
 	updateHTMLBox()
