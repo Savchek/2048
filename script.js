@@ -302,6 +302,7 @@ const checkKey = e => {
 const start = () => {
 
 	changeStyle([root], '--size', size)
+	changeStyle([root], '--field-width', Math.min(window.innerWidth, window.innerHeight * 0.8))
 
 	for (let i = 0; i < size; i++) {
 		n.push(new Array())

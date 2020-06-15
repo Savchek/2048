@@ -185,6 +185,7 @@ button {
 	width: 100%;
 	padding: 20px 0;
 	background-color: rgba(255, 255, 255, 0.7);
+	z-index: 2;
 }
 #sizeControl {
 	margin-top: 10px;
@@ -192,14 +193,17 @@ button {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
+	z-index: 2;
 }
 #size {
 	margin: 0 10px;
+	z-index: 2;
 }
 
 #startGame {
 	margin-top: 30px;
 	width: 200px;
+	z-index: 2;
 }
 
 #gameOver {
@@ -211,6 +215,7 @@ button {
 	-ms-flex-pack: distribute;
 	    justify-content: space-around;
 	margin-bottom: 20px;
+	z-index: 2;
 }
 
 #gameOver p{
