@@ -303,6 +303,14 @@ const start = () => {
 
 	changeStyle([root], '--size', size)
 
+	if (window.innerWidth > (window.innerHeight * 0.8)) {
+		field.classList.add('b-h')
+		field.classList.add('f-h')
+	} else {
+		field.classList.add('b-w')
+		field.classList.add('f-w')
+	}
+
 	for (let i = 0; i < size; i++) {
 		n.push(new Array())
 	}
