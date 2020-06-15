@@ -16,7 +16,7 @@
 
 :root {
 	--size: 3;
-	--field-width: 100vw;
+	--field-width: 80vh;
 	--field-color: #fff2e6;
 	--box-width: calc((var(--field-width) / var(--size)) * 0.8);
 	--box-margin: calc((var(--field-width) / var(--size)) * 0.1);
