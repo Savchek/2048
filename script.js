@@ -347,48 +347,6 @@ const goToMenu = () => {
 	}
 }
 
-// touch controls
-const handleTouchStart = evt => {
-	const firstTouch = evt.touches[0]
-	xDown = firstTouch.clientX
-	yDown = firstTouch.clientY
-}
-
-const handleTouchMove = evt => {
-	if (!xDown || !yDown) {
-		return
-	}
-
-	let xUp = evt.touches[0].clientX
-	let yUp = evt.touches[0].clientY
-
-	let xDiff = xDown - xUp
-	let yDiff = yDown - yUp
-
-	let threshold = 100
-	let dir = null
-
-	if (Math.abs(xDiff) > threshold) {
-		if (xDiff > 0) {
-			dir = 'left'
-		} else {
-			dir = 'right'
-		}
-	} else if (Math.abs(yDiff) > threshold) {
-		if (yDiff > 0) {
-			dir = 'up'
-		} else {
-			dir = 'down'
-		}
-	}
-
-	if (dir) {
-		swipe(dir)
-		xDown = null
-		yDown = null
-	}
-}
-
 document.getElementById('sizeIncrease').addEventListener('click', () => changeSize(1))
 document.getElementById('sizeDecrease').addEventListener('click', () => changeSize(-1))
 document.getElementById('startGame').addEventListener('click', start)
@@ -401,7 +359,4 @@ document.getElementById('btn-up').addEventListener('click', () => swipe('up'))
 document.getElementById('btn-down').addEventListener('click', () => swipe('down'))
 
 document.addEventListener('keydown', checkKey)
-
-field.addEventListener('touchstart', handleTouchStart, false)
-field.addEventListener('touchmove', handleTouchMove, false)
 
