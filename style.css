@@ -16,34 +16,11 @@
 
 :root {
 	--size: 3;
+	--field-width: min(100vw, 80vh);
 	--field-color: #fff2e6;
+	--box-width: calc((var(--field-width) / var(--size)) * 0.8);
+	--box-margin: calc((var(--field-width) / var(--size)) * 0.1);
 	--box-color: #ffe6cc;
-}
-
-.f-w {
-	width: 100vw;
-	height: 100vw;
-	-webkit-box-shadow: 0 0 0 calc(100vw / var(--size) * 0.1) var(--field-color);
-	        box-shadow: 0 0 0 calc(100vw / var(--size) * 0.1) var(--field-color);
-}
-
-.f-h {
-	width: 80vh;
-	height: 80vh;
-	-webkit-box-shadow: 0 0 0 calc(80vh / var(--size) * 0.1) var(--field-color);
-	        box-shadow: 0 0 0 calc(80vh / var(--size) * 0.1) var(--field-color);
-}
-
-.b-w [id^="box"]{
-	width: calc(100vw / var(--size) * 0.8);
-	height: calc(100vw / var(--size) * 0.8);
-	margin: calc(100vw / var(--size) * 0.1);
-}
-
-.b-h [id^="box"]{
-	width: calc(80vh / var(--size) * 0.8);
-	height: calc(80vh / var(--size) * 0.8);
-	margin: calc(80vh / var(--size) * 0.1);
 }
 
 html {
@@ -125,6 +102,10 @@ body, input, button {
 	    -ms-flex-align: center;
 	        align-items: center;
 	position: relative;
+	width: var(--field-width);
+	height: var(--field-width);
+	-webkit-box-shadow: 0 0 0 var(--box-margin) var(--field-color);
+	        box-shadow: 0 0 0 var(--box-margin) var(--field-color);
 	font-size: 32px;
 	margin-bottom: 20px;
 	background-color: var(--field-color);
@@ -141,6 +122,9 @@ body, input, button {
 	-ms-flex-pack: distribute;
 	    justify-content: space-around;
 	background-color: var(--box-color);
+	width: var(--box-width);
+	height: var(--box-width);
+	margin: var(--box-margin);
 	border-radius: 10%;
 	-webkit-transition: all .2s;
 	-o-transition: all .2s;
