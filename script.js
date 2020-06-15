@@ -14,6 +14,23 @@ let root = document.documentElement
 let boxes
 let boxWidth
 
+let boxProperties = {
+	2: [0.6, '#ffcc99'],
+	4: [0.6, '#ff9933'],
+	8: [0.6, '#ff5500'],
+	16: [0.5, '#ff80aa'],
+	32: [0.5, '#ff8080'],
+	64: [0.5, '#ff1a1a'],
+	128: [0.45, '#ff99ff'],
+	256: [0.45, '#d24dff'],
+	512: [0.45, '#9966ff'],
+	1024: [0.35, '#3333ff'],
+	2048: [0.35, '#1aff1a'],
+	4096: [0.35, '#1aff1a'],
+	8192: [0.35, '#1aff1a'],
+	1: [0.25, '#e600e6'],
+}
+
 // touch
 let xDown = null
 let yDown = null
@@ -28,7 +45,7 @@ const rand = (min, max) => {
 }
 
 const changeStyle = ([...nodes], property, value) => {
-	nodes.forEach(n => n.style.setProperty(property, value))
+	nodes.forEach(n => n.style.cssText = `${property}: ${value};`)
 }
 
 const pickRandomPower = power => {
@@ -54,9 +71,23 @@ const changeSize = amount => {
 const updateHTMLBox = () => {
 	for (let i = 0; i < size; i++) {
 		for (let j = 0; j < size; j++) {
+			let propIndex = n[i][j] > 8192 ? 1 : n[i][j]
 			let index = i * size + j
-			// console.log(`i: ${i}, j: ${j}, size: ${size}, index: ${index}`)
-			boxes[index].innerText = n[i][j] ? n[i][j] : ''
+			if (n[i][j]) {
+				boxes[index].innerText = n[i][j]
+				boxes[index].style.fontSize = boxWidth * boxProperties[propIndex][0] + 'px'
+				boxes[index].style.backgroundColor = boxProperties[propIndex][1]
+			} else {
+				boxes[index].innerText = ''
+				boxes[index].style.backgroundColor = 'transparent'
+			}
+
+			setTimeout(() => {
+				boxes[index].style.inset = '0 0 0 0'
+				boxes[index].style.zIndex = '1'
+				boxes[index].style.opacity = '1'
+			}, 200)
+
 		}
 	}
 }
@@ -106,6 +137,9 @@ const swipe = side => {
 					if (!n[i][k - 1]) {
 						n[i][k - 1] = n[i][k]
 						n[i][k] = 0
+						boxes[i * size + j].style.left = parseFloat(boxes[i * size + j].style.left) - boxWidth + 'px'
+						boxes[i * size + j].style.zIndex = '-1'
+						boxes[i * size + j].style.opacity = '0.5'
 						moved = true
 					}
 					// Connect two
@@ -114,6 +148,9 @@ const swipe = side => {
 						updateScore(score + n[i][k])
 						n[i][k] = 0
 						connected.push(i + '' + (k - 1))
+						boxes[i * size + j].style.left = parseFloat(boxes[i * size + j].style.left) - boxWidth + 'px'
+						boxes[i * size + j].style.zIndex = '-1'
+						boxes[i * size + j].style.opacity = '0.5'
 						moved = true
 					}
 					k--
@@ -135,6 +172,9 @@ const swipe = side => {
 						n[k - 1][j] = n[k][j]
 						n[k][j] = 0
 						moved = true
+						boxes[i * size + j].style.top = parseFloat(boxes[i * size + j].style.top) - boxWidth + 'px'
+						boxes[i * size + j].style.zIndex = '-1'
+						boxes[i * size + j].style.opacity = '0.5'
 					}
 					// Connect two
 					if (n[k - 1] && n[k - 1][j] == n[k][j] && !connected.find(e => e == (k - 1) + '' + j) && !connected.find(e => e == k + '' + j)) {
@@ -143,6 +183,9 @@ const swipe = side => {
 						n[k][j] = 0
 						connected.push((k - 1) + '' + j)
 						moved = true
+						boxes[i * size + j].style.top = parseFloat(boxes[i * size + j].style.top) - boxWidth + 'px'
+						boxes[i * size + j].style.zIndex = '-1'
+						boxes[i * size + j].style.opacity = '0.5'
 					}
 					k--
 				}
@@ -162,6 +205,9 @@ const swipe = side => {
 						n[i][k + 1] = n[i][k]
 						n[i][k] = 0
 						moved = true
+						boxes[i * size + j].style.left = parseFloat(boxes[i * size + j].style.left) + boxWidth + 'px'
+						boxes[i * size + j].style.zIndex = '-1'
+						boxes[i * size + j].style.opacity = '0.5'
 					}
 					// Connect two
 					if (n[i][k + 1] && n[i][k + 1] == n[i][k] && !connected.find(e => e == i + '' + (k + 1)) && !connected.find(e => e == i + '' + k)) {
@@ -170,6 +216,9 @@ const swipe = side => {
 						n[i][k] = 0
 						connected.push(i + '' + (k + 1))
 						moved = true
+						boxes[i * size + j].style.left = parseFloat(boxes[i * size + j].style.left) + boxWidth + 'px'
+						boxes[i * size + j].style.zIndex = '-1'
+						boxes[i * size + j].style.opacity = '0.5'
 					}
 					k++
 				}
@@ -189,6 +238,9 @@ const swipe = side => {
 						n[k + 1][j] = n[k][j]
 						n[k][j] = 0
 						moved = true
+						boxes[i * size + j].style.top = parseFloat(boxes[i * size + j].style.top) + boxWidth + 'px'
+						boxes[i * size + j].style.zIndex = '-1'
+						boxes[i * size + j].style.opacity = '0.5'
 					}
 					// Connect two
 					if (n[k + 1] && n[k + 1][j] == n[k][j] && !connected.find(e => e == (k + 1) + '' + j) && !connected.find(e => e == k + '' + j)) {
@@ -197,6 +249,9 @@ const swipe = side => {
 						n[k][j] = 0
 						connected.push((k + 1) + '' + j)
 						moved = true
+						boxes[i * size + j].style.top = parseFloat(boxes[i * size + j].style.top) + boxWidth + 'px'
+						boxes[i * size + j].style.zIndex = '-1'
+						boxes[i * size + j].style.opacity = '0.5'
 					}
 					k++
 				}
@@ -268,6 +323,7 @@ const start = () => {
 
 	boxes = document.querySelectorAll('[id^="box"]')
 
+
 	for (let i = 0; i < rand(2, size - 1); i++)
 		addNum(pickRandomPower(1))
 
@@ -277,6 +333,7 @@ const start = () => {
 	changeStyle([startBlock, gameOverBlock], 'display', 'none')
 
 	boxWidth = document.getElementById('box-0-0').offsetWidth
+	updateHTMLBox()
 }
 
 const goToMenu = () => {
@@ -326,20 +383,6 @@ const handleTouchMove = evt => {
 		xDown = null
 		yDown = null
 	}
-
-	// if (Math.abs(xDiff) > Math.abs(yDiff)) {
-	// 	if (xDiff > threshold) {
-	// 		swipe('left')
-	// 	} else if (xDiff < threshold) {
-	// 		swipe('right')
-	// 	}
-	// } else {
-	// 	if (yDiff > threshold) {
-	// 		swipe('up')
-	// 	} else if (yDiff < threshold) {
-	// 		swipe('down')
-	// 	}
-	// }
 }
 
 document.getElementById('sizeIncrease').addEventListener('click', () => changeSize(1))

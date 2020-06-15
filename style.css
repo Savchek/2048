@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Exo+2:300,400&display=swap');
+
 * {
 	margin: 0;
 	padding: 0;
@@ -7,15 +9,20 @@
 :root {
 	--size: 3;
 	--field-width: min(100vw, 85vh);
-	--field-color: rgb(255, 233, 206);
-	--box-width: calc(var(--field-width) / var(--size));
-	--box-color: rgb(231, 171, 121);
-	--box-border-width: calc((var(--field-width) / var(--size)) / 10);
+	--field-color: #fff2e6;
+	--box-width: calc((var(--field-width) / var(--size)) * 0.8);
+	--box-margin: calc((var(--field-width) / var(--size)) * 0.1);
+	--box-color: #ffe6cc;
 }
 
 html {
 	width: 100vw;
 	height: 100vh;
+}
+
+body, input, button {
+	font-family: 'Exo 2', sans-serif;
+	color: rgb(55, 48, 56);
 }
 
 .container {
@@ -49,6 +56,7 @@ html {
 }
 
 #gameBlock {
+	user-select: none;
 	display: none;
 }
 
@@ -57,12 +65,13 @@ html {
 	flex-wrap: wrap;
 	justify-content: space-evenly;
 	align-items: center;
+	position: relative;
 	width: var(--field-width);
 	height: var(--field-width);
+	box-shadow: 0 0 0 var(--box-margin) var(--field-color);
 	font-size: 32px;
 	margin-bottom: 20px;
 	background-color: var(--field-color);
-	box-shadow: 0px 0px 0px var(--box-border-width) var(--field-color);
 	border-radius: 10px;
 }
 
@@ -73,29 +82,14 @@ html {
 	background-color: var(--box-color);
 	width: var(--box-width);
 	height: var(--box-width);
-	transition: .2s;
+	margin: var(--box-margin);
+	border-radius: 10%;
+	transition: all .2s;
 	position: relative;
 	left: 0;
 	top: 0;
 	right: 0;
 	bottom: 0;
-}
-
-[id^="box"]::before {
-	position: absolute;
-	content: '';
-	width: 100%;
-	height: 100%;
-	box-shadow: inset 0px 0px 0px var(--box-border-width) var(--field-color);
-	border-radius: 20%;
-}
-
-[id^="box"]::after {
-	position: absolute;
-	content: '';
-	width: 100%;
-	height: 100%;
-	box-shadow: inset 0px 0px 0px var(--box-border-width) var(--field-color);
 }
 
 button {
@@ -123,6 +117,11 @@ button {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	position: absolute;
+	top: 40vh;
+	width: 100%;
+	padding: 20px 0;
+	background-color: rgba(255, 255, 255, 0.7);
 }
 #sizeControl {
 	margin-top: 10px;
@@ -132,12 +131,24 @@ button {
 #size {
 	margin: 0 10px;
 }
+
 #startGame {
 	margin-top: 30px;
 	width: 200px;
 }
+
 #gameOver {
 	display: none;
-	font-size: 32px;
+	position: absolute;
+	top: 25vh;
+	width: 100%;
+	font-size: 64px;
+	justify-content: space-around;
 	margin-bottom: 20px;
+}
+
+#gameOver p{
+	padding: 0 10px;
+	background-color: rgba(255, 255, 255, 0.7);
+	border-radius: 10px;
 }
