@@ -16,7 +16,6 @@
 
 :root {
 	--size: 3;
-	--field-width: min(100vw, 80vh);
 	--field-color: #fff2e6;
 	--box-color: #ffe6cc;
 }
