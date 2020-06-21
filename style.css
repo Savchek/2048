@@ -152,6 +152,11 @@ button {
 	    justify-content: space-around;
 }
 
+#controls [id^="btn"]:active {
+	border: none;
+	outline: none;
+}
+
 #controls [id^="btn"] {
 	position: absolute;
 	border: none;

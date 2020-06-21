@@ -31,10 +31,6 @@ let boxProperties = {
 	1: [0.25, '#e600e6'],
 }
 
-// touch
-let xDown = null
-let yDown = null
-
 
 const rand = (min, max) => {
 	if (max === undefined) {
@@ -125,6 +121,15 @@ const addNum = num => {
 const swipe = side => {
 	let connected = []
 	let moved = false
+
+	const stylizeBox = (index, side, sign) => {
+		boxes[index].style[side] = parseFloat(boxes[index].style[side]) + (boxWidth * sign) + 'px'
+		boxes[index].style.zIndex = '-1'
+		boxes[index].style.opacity = '0.5'
+
+		moved = true
+	}
+
 	if (side == 'left') {
 		for (let i = 0; i < size; i++) {
 			for (let j = 0; j < size; j++) {
@@ -137,10 +142,7 @@ const swipe = side => {
 					if (!n[i][k - 1]) {
 						n[i][k - 1] = n[i][k]
 						n[i][k] = 0
-						boxes[i * size + j].style.left = parseFloat(boxes[i * size + j].style.left) - boxWidth + 'px'
-						boxes[i * size + j].style.zIndex = '-1'
-						boxes[i * size + j].style.opacity = '0.5'
-						moved = true
+						stylizeBox(i * size + j, 'left', -1)
 					}
 					// Connect two
 					if (n[i][k - 1] && n[i][k - 1] == n[i][k] && !connected.find(e => e == i + '' + (k - 1)) && !connected.find(e => e == i + '' + k)) {
@@ -148,10 +150,7 @@ const swipe = side => {
 						updateScore(score + n[i][k])
 						n[i][k] = 0
 						connected.push(i + '' + (k - 1))
-						boxes[i * size + j].style.left = parseFloat(boxes[i * size + j].style.left) - boxWidth + 'px'
-						boxes[i * size + j].style.zIndex = '-1'
-						boxes[i * size + j].style.opacity = '0.5'
-						moved = true
+						stylizeBox(i * size + j, 'left', -1)
 					}
 					k--
 				}
@@ -171,10 +170,7 @@ const swipe = side => {
 					if (!n[k - 1][j]) {
 						n[k - 1][j] = n[k][j]
 						n[k][j] = 0
-						moved = true
-						boxes[i * size + j].style.top = parseFloat(boxes[i * size + j].style.top) - boxWidth + 'px'
-						boxes[i * size + j].style.zIndex = '-1'
-						boxes[i * size + j].style.opacity = '0.5'
+						stylizeBox(i * size + j, 'top', -1)
 					}
 					// Connect two
 					if (n[k - 1] && n[k - 1][j] == n[k][j] && !connected.find(e => e == (k - 1) + '' + j) && !connected.find(e => e == k + '' + j)) {
@@ -182,10 +178,7 @@ const swipe = side => {
 						updateScore(score + n[k][j])
 						n[k][j] = 0
 						connected.push((k - 1) + '' + j)
-						moved = true
-						boxes[i * size + j].style.top = parseFloat(boxes[i * size + j].style.top) - boxWidth + 'px'
-						boxes[i * size + j].style.zIndex = '-1'
-						boxes[i * size + j].style.opacity = '0.5'
+						stylizeBox(i * size + j, 'top', -1)
 					}
 					k--
 				}
@@ -204,10 +197,7 @@ const swipe = side => {
 					if (!n[i][k + 1]) {
 						n[i][k + 1] = n[i][k]
 						n[i][k] = 0
-						moved = true
-						boxes[i * size + j].style.left = parseFloat(boxes[i * size + j].style.left) + boxWidth + 'px'
-						boxes[i * size + j].style.zIndex = '-1'
-						boxes[i * size + j].style.opacity = '0.5'
+						stylizeBox(i * size + j, 'left', 1)
 					}
 					// Connect two
 					if (n[i][k + 1] && n[i][k + 1] == n[i][k] && !connected.find(e => e == i + '' + (k + 1)) && !connected.find(e => e == i + '' + k)) {
@@ -215,10 +205,7 @@ const swipe = side => {
 						updateScore(score + n[i][k])
 						n[i][k] = 0
 						connected.push(i + '' + (k + 1))
-						moved = true
-						boxes[i * size + j].style.left = parseFloat(boxes[i * size + j].style.left) + boxWidth + 'px'
-						boxes[i * size + j].style.zIndex = '-1'
-						boxes[i * size + j].style.opacity = '0.5'
+						stylizeBox(i * size + j, 'left', 1)
 					}
 					k++
 				}
@@ -237,10 +224,7 @@ const swipe = side => {
 					if (!n[k + 1][j]) {
 						n[k + 1][j] = n[k][j]
 						n[k][j] = 0
-						moved = true
-						boxes[i * size + j].style.top = parseFloat(boxes[i * size + j].style.top) + boxWidth + 'px'
-						boxes[i * size + j].style.zIndex = '-1'
-						boxes[i * size + j].style.opacity = '0.5'
+						stylizeBox(i * size + j, 'top', 1)
 					}
 					// Connect two
 					if (n[k + 1] && n[k + 1][j] == n[k][j] && !connected.find(e => e == (k + 1) + '' + j) && !connected.find(e => e == k + '' + j)) {
@@ -248,10 +232,7 @@ const swipe = side => {
 						updateScore(score + n[k][j])
 						n[k][j] = 0
 						connected.push((k + 1) + '' + j)
-						moved = true
-						boxes[i * size + j].style.top = parseFloat(boxes[i * size + j].style.top) + boxWidth + 'px'
-						boxes[i * size + j].style.zIndex = '-1'
-						boxes[i * size + j].style.opacity = '0.5'
+						stylizeBox(i * size + j, 'top', 1)
 					}
 					k++
 				}
